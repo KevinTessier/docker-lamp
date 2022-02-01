@@ -13,8 +13,6 @@ services:
       args:
         VERSION_PHP: ${VERSION_PHP}
     restart: always
-    expose: 
-      - 3000 
     volumes:
       - ./wwwroot:/var/www:cached
       - ./etc/apache2/default.conf:/etc/apache2/sites-available/000-default.conf
