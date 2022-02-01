@@ -1,0 +1,70 @@
+version: "3.9"
+
+services:
+
+  web:
+    container_name: php-${PROJET_NAME}
+    # command: bash -c "sh /home/1000/install_wp.sh"
+    # command: bash -c "yarn install && yarn serve"
+    user: "1000:www-data"
+    build:
+      dockerfile: ./Docker/php-fpm/Dockerfile
+      context: .
+      args:
+        VERSION_PHP: ${VERSION_PHP}
+    restart: always
+    expose: 
+      - 3000 
+    volumes:
+      - ./wwwroot:/var/www:cached
+      - ./etc/apache2/default.conf:/etc/apache2/sites-available/000-default.conf
+    # Here we define our settings for traefik how to proxy our service.
+    labels:
+      # This is enableing treafik to proxy this service
+      - "traefik.enable=true"
+      # Here we have to define the URL
+      - "traefik.http.routers.${PROJET_NAME}.rule=Host(`dev.${PROJETS_HOST}`)"
+      # Here we are defining wich entrypoint should be used by clients to access this service
+      - "traefik.http.routers.${PROJET_NAME}.entrypoints=web"
+      # Here we define in wich network treafik can find this service
+      - "traefik.docker.network=network_app"
+      # This is the port that traefik should proxy
+      - "traefik.http.services.${PROJET_NAME}.loadbalancer.server.port=80"
+    networks:
+      - network_app
+
+  mysql:
+    container_name: mysql-${PROJET_NAME}
+    image: ${VERSION_MYSQL}
+    restart: always
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - network_app
+
+  phpmyadmin:
+    container_name: phpmyadmin-${PROJET_NAME}
+    image: ${VERSION_PHPMYADMIN}
+    restart: always
+    environment:
+      PMA_HOST: mysql-${PROJET_NAME}
+      PMA_USER: ${PMA_USER}
+      PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      UPLOAD_LIMIT: ${UPLOAD_LIMIT}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pma-${PROJET_NAME}.rule=Host(`pma.${PROJETS_HOST}`)"
+      - "traefik.http.routers.pma-${PROJET_NAME}.entrypoints=web"
+      - "traefik.docker.network=network_app"
+      - "traefik.http.services.pma-${PROJET_NAME}.loadbalancer.server.port=80"
+    networks:
+      - network_app
+
+volumes:
+  mysql-data:
+
+networks:
+  network_app:
+    external: true
