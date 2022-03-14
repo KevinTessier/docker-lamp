@@ -21,7 +21,7 @@ services:
       # This is enableing treafik to proxy this service
       - "traefik.enable=true"
       # Here we have to define the URL
-      - "traefik.http.routers.${PROJET_NAME}.rule=Host(`dev.${PROJETS_HOST}`)"
+      - "traefik.http.routers.${PROJET_NAME}.rule=Host(`dev.${PROJET_NAME}.localhost`)"
       # Here we are defining wich entrypoint should be used by clients to access this service
       - "traefik.http.routers.${PROJET_NAME}.entrypoints=web"
       # Here we define in wich network treafik can find this service
@@ -53,7 +53,7 @@ services:
       UPLOAD_LIMIT: ${UPLOAD_LIMIT}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.pma-${PROJET_NAME}.rule=Host(`pma.${PROJETS_HOST}`)"
+      - "traefik.http.routers.pma-${PROJET_NAME}.rule=Host(`pma.${PROJET_NAME}.localhost`)"
       - "traefik.http.routers.pma-${PROJET_NAME}.entrypoints=web"
       - "traefik.docker.network=network_app"
       - "traefik.http.services.pma-${PROJET_NAME}.loadbalancer.server.port=80"
