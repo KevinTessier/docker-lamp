@@ -25,7 +25,7 @@ RUN apt-get install -y curl && \
 		apt-get install -y nodejs && \
 		npm install -g pnpm
 
-#install composer
+## INSTALL COMPOSER
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 RUN useradd 1000 && \
@@ -33,11 +33,3 @@ RUN useradd 1000 && \
     chown 1000:www-data -R /home/
 
 RUN a2enmod rewrite headers
-
-# FROM base as dependencies
-
-# WORKDIR /html
-# COPY . .
-# COPY --from=dependencies /html/node_modules ./node_modules
-# RUN pnpm build
-# RUN 
