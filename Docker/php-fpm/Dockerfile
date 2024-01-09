@@ -28,6 +28,14 @@ RUN apt-get install -y curl && \
 ## INSTALL COMPOSER
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+## INSTALL DRUSH
+RUN curl https://drupalconsole.com/installer \
+				-L -o /usr/local/bin/drupal && \
+			chmod +x /usr/local/bin/drupal && \
+			curl https://github.com/drush-ops/drush-launcher/releases/download/0.10.0/drush.phar \
+				-L -o /usr/local/bin/drush && \
+			chmod +x /usr/local/bin/drush
+
 RUN useradd 1000 && \
     mkdir /home/1000/ && \
     chown 1000:www-data -R /home/
