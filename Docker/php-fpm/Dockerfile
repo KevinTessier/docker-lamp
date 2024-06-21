@@ -9,12 +9,16 @@ RUN apt-get update && apt-get install -y \
 	libfreetype6-dev \
 	libjpeg62-turbo-dev \
 	libpng-dev \
+	yarn \
 	libmagickwand-dev \
+	git \
 	curl && \
-	pecl install imagick && \
-	docker-php-ext-install intl mysqli pdo pdo_mysql zip exif opcache && \
-	docker-php-ext-configure intl gd --with-freetype --with-jpeg && \
-	docker-php-ext-enable imagick && \
+	pecl install imagick && \ 
+	docker-php-ext-install mysqli pdo pdo_mysql zip exif opcache && \
+	docker-php-ext-configure gd --with-freetype --with-jpeg && \
+	docker-php-ext-enable imagick pdo_mysql && \
+	docker-php-ext-configure intl && \
+	docker-php-ext-install intl && \
 	docker-php-ext-install -j$(nproc) gd
 
 RUN apt-get install -y curl && \
