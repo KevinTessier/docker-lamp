@@ -1,2 +1,4 @@
 ssh/
-wwwwroot/html/
+wwwroot/
+logs/*
+!logs
