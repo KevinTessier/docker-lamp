@@ -32,6 +32,12 @@ RUN apt-get install -y curl && \
 ## INSTALL COMPOSER
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+## INSTALL WP-CLI
+RUN	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+	chmod +x wp-cli.phar && \
+	mv wp-cli.phar /usr/local/bin/wp && \
+	wp --info
+	
 RUN useradd 1000 && \
     mkdir /home/1000/ && \
     chown 1000:www-data -R /home/
