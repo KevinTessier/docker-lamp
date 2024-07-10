@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y \
 	docker-php-ext-install -j$(nproc) gd
 
 RUN apt-get install -y curl && \
-		curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
+		curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
 		curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
 		echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
     	apt-get update && \
@@ -41,5 +41,9 @@ RUN	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 RUN useradd 1000 && \
     mkdir /home/1000/ && \
     chown 1000:www-data -R /home/
+
+COPY ssh/auth.json /home/1000/.composer/auth.json
+
+# RUN ssh-keyscan -t rsa gitlab.walkingnerds.dev >> /home/1000/.ssh/known_hosts
 
 RUN a2enmod rewrite headers
