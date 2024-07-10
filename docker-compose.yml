@@ -14,7 +14,8 @@ services:
     volumes:
       - ./wwwroot:/var/www:cached
       - ./etc/apache2/default.conf:/etc/apache2/sites-available/000-default.conf
-      - ./logs/httpd:/var/log/apache2
+      - ./etc/php/uploads.ini:/1000/local/etc/php/conf.d/uploads.ini
+      # - ./logs/httpd:/var/log/apache2
     # Here we define our settings for traefik how to proxy our service.
     labels:
       # This is enableing treafik to proxy this service
