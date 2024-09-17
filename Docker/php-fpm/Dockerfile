@@ -1,6 +1,6 @@
-ARG VERSION_PHP
+ARG VERSION_PHP=lastest
 
-FROM php:$VERSION_PHP
+FROM php:${VERSION_PHP}
 
 RUN apt-get update && apt-get install -y \
 	vim \
