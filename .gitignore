@@ -1,4 +1,4 @@
 ssh/
 wwwroot/
-logs/*
+logs/httpd/*
 !logs
